@@ -1,0 +1,20 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+	<SOAP-ENV:Header/>
+	<S:Body>
+		<createUsersRequest xmlns="http://business.poste.it/anonymous/soap/create" xmlns:ns2="http://business.poste.it/anonymous/soap">
+			<clientId>PIPPO</clientId>
+			<userDatas>
+				<companyTaxCode>14653991001</companyTaxCode>
+				<companyVatNumber>14653991002</companyVatNumber>
+				<companyCustomerCareCode>482.545.239</companyCustomerCareCode>
+				<usersForCreate>
+					<name>Testuno</name>
+					<surname>Anonymousuno</surname>
+					<email>testuno.anonymousuno@gmail.com</email>
+					<roles>pgc#user</roles>
+					<roles>pgc#admin</roles>
+				</usersForCreate>
+			</userDatas>
+		</createUsersRequest>
+	</S:Body>
+</S:Envelope>
