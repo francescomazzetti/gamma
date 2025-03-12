@@ -34,9 +34,4 @@ public class MockUserAuthenticator implements IUserAuthenticator
 		}
 		return false;
 	}
-
-	public JSONObject getData(String username) {
-		String userDataAsS = _users.get(username);
-		return new JSONObject(userDataAsS);
-	}
 }

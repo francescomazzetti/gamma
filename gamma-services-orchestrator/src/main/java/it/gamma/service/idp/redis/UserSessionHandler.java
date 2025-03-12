@@ -22,12 +22,6 @@ public class UserSessionHandler
 	}
 
 	public String readOnce(ISessionData sessionData, String key) {
-		String value = _redisTemplate.opsForValue().get(sessionData.prefix()+key);
-		_redisTemplate.delete(sessionData.prefix()+key);
-		return value;
-	}
-	
-	public String read(ISessionData sessionData, String key) {
-		return _redisTemplate.opsForValue().get(sessionData.prefix()+key);
+		return _redisTemplate.opsForValue().getAndDelete(sessionData.prefix()+key);
 	}
 }
