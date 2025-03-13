@@ -71,6 +71,10 @@ public class InternalController
 		String azcode = new BigInteger(130, new SecureRandom()).toString(32);
 		_userSessionHandler.write(new AzCodeSessionData(), azcode, userSession.toString());
 		String redirection = authnRequest.getString("redirect_uri")+"?code="+azcode;
+		String state = authnRequest.optString("state", "");
+		if (!"".equals(state)) {
+			redirection = redirection + "&state="+state;
+		}
 		log.info(sid + " - authentication ok - username: " + username + " - redirection to: " + redirection);
 		return "redirect:"+redirection;
 	}

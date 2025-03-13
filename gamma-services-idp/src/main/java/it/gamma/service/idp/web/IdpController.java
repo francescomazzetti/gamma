@@ -1,7 +1,5 @@
 package it.gamma.service.idp.web;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -25,10 +23,10 @@ import com.nimbusds.jose.JOSEException;
 
 import it.gamma.service.idp.IConstants;
 import it.gamma.service.idp.redis.AccessTokenSessionData;
-import it.gamma.service.idp.redis.AzCodeSessionData;
 import it.gamma.service.idp.redis.UserSessionHandler;
 import it.gamma.service.idp.sign.IdpSigner;
 import it.gamma.service.idp.web.authenticator.IUserAuthenticator;
+import it.gamma.service.idp.web.factory.SignedTokenFactory;
 import it.gamma.service.idp.web.metadata.IMetadataReader;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -97,37 +95,8 @@ public class IdpController
 		session.setAttribute(IConstants.KEY_SESSION_AUTHN_REQ, authnRequest.toString());
 		model.addAttribute("clientName", metadata.getString(IMetadataReader.KEY_CLIENT_NAME));
 		model.addAttribute("csrf", sessionId);
+		log.info("auth endpoint call ok - clientid: " + client_id + " - sessionid: " + sessionId + " - redirecting to login");
         return "login";
-	}
-	
-	@PostMapping("/token")
-    public ResponseEntity<JSONObject> token(
-    		@RequestParam(name="client_id") String client_id,
-    		@RequestParam(name="grant_type") String grant_type,
-    		@RequestParam(name="code") String code,
-    		HttpServletRequest request) {
-		if (!"authorization_code".equals(grant_type)) {
-			log.error("token endpoint ko - invalid grant type: " + grant_type);
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		String userSessionAsS = _userSessionHandler.readOnce(new AzCodeSessionData(), code);
-		if (userSessionAsS == null) {
-			log.error("no valid session found from azcode");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		JSONObject userSession = new JSONObject(userSessionAsS);
-		String sid = userSession.getString("sid");
-		String username = userSession.getString("username");
-		userSession.put("auth-complete", "1");
-		String accessToken = new BigInteger(260, new SecureRandom()).toString(64); //semplificato, dovrebbe essere un jwt opaco perche' cifrato da idp
-		_userSessionHandler.write(new AccessTokenSessionData(), accessToken, userSession.toString());
-		
-		JSONObject response = new JSONObject();
-		response.put("access_token", accessToken);
-		response.put("token_type", "Bearer");
-		response.put("expires_in", 3600);
-		log.info(sid + " - token endpoint ok - username: " + username);
-		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/userinfo")
@@ -145,23 +114,9 @@ public class IdpController
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		JSONObject userDataJson = new JSONObject(userData);
-		String authnReqAsString = userDataJson.getString("authn-request");
-		JSONObject authnRequest = new JSONObject(authnReqAsString);
-		JSONObject userinfoData = new JSONObject();
-		userinfoData.put("aud", authnRequest.getString("client_id"));
-		userinfoData.put("iss", "gamma-idp");
-		String username = userDataJson.getString("username");
-		userinfoData.put("sub", username);
-		JSONObject claims = new JSONObject();
-		// TODO devo farlo leggendo i valori dello scope, per adesso metto valori mock
-		JSONObject userAuthData = _userAuthenticator.getData(username);
-		claims.put("tenantId", userAuthData.getString("tenant"));
-		claims.put("codiceFiscale", userAuthData.getString("codiceFiscale"));
-		userinfoData.put("claims", claims.toString());
-		// TODO ecc. exp, iat, ...
 		try {
-			String signed = _idpSigner.sign(userinfoData.toString());
-			return ResponseEntity.ok(signed);
+			String signedToken = new SignedTokenFactory().build(userDataJson, _userAuthenticator, _idpSigner);
+			return ResponseEntity.ok(signedToken);
 		} catch (JOSEException e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

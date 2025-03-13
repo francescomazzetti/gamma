@@ -80,30 +80,8 @@ public class IdpControllerTest {
 	}
 	
 	@Test
-	public void test2() throws Exception {
-		String userSession = "{\"authn-request\":\"{\\\"redirect_uri\\\":\\\"http://localhost:8082/gamma-service-orchestrator/client-redirect-1\\\",\\\"client_id\\\":\\\"https://gamma-orchestrator.com\\\",\\\"sid\\\":\\\"408b1a0a-26c9-468a-bcf4-11270e57893e\\\"}\",\"auth-complete\":\"0\",\"username\":\"francesco.mazzetti\",\"sid\":\"408b1a0a-26c9-468a-bcf4-11270e57893e\"}";
-		String azcode = new BigInteger(130, new SecureRandom()).toString(32);
-		userSessionHandler.write(new AzCodeSessionData(), azcode, userSession);
-		String clientId = MockMetadataReader.CLIENT_ID;
-		HttpServletRequest request = new MockHttpServletRequest();
-		String grantType = "authorization_code";
-		ResponseEntity<JSONObject> result = idpController.token(clientId, grantType, azcode, request);
-		assertEquals(HttpStatus.OK, result.getStatusCode());
-		JSONObject body = result.getBody();
-		assertTrue(body.has("access_token"));
-		assertEquals(3600, body.getLong("expires_in"));
-		assertEquals("Bearer", body.getString("token_type"));
-		
-		String accessToken = body.getString("access_token");
-		String accTokenSession = userSessionHandler.read(new AccessTokenSessionData(), accessToken);
-		JSONObject accTokenSessionJson = new JSONObject(accTokenSession);
-		assertEquals("1", accTokenSessionJson.getString("auth-complete"));
-		assertEquals("francesco.mazzetti", accTokenSessionJson.getString("username"));
-	}
-	
-	@Test
-	public void test3() throws ParseException {
-		String userSessionAT = "{\"authn-request\":\"{\\\"redirect_uri\\\":\\\"http://localhost:8082/gamma-service-orchestrator/client-redirect-1\\\",\\\"client_id\\\":\\\"https://gamma-orchestrator.com\\\",\\\"sid\\\":\\\"408b1a0a-26c9-468a-bcf4-11270e57893e\\\"}\",\"auth-complete\":\"1\",\"username\":\"francesco.mazzetti\",\"sid\":\"408b1a0a-26c9-468a-bcf4-11270e57893e\"}";
+	public void test2() throws ParseException {
+		String userSessionAT = "{\"authn-request\":\"{\\\"redirect_uri\\\":\\\"http://localhost:8082/gamma-service-orchestrator/oauth/client-redirect-1\\\",\\\"client_id\\\":\\\"https://gamma-orchestrator.com\\\",\\\"sid\\\":\\\"408b1a0a-26c9-468a-bcf4-11270e57893e\\\"}\",\"auth-complete\":\"1\",\"username\":\"francesco.mazzetti\",\"sid\":\"408b1a0a-26c9-468a-bcf4-11270e57893e\"}";
 		String accToken = new BigInteger(130, new SecureRandom()).toString(32);
 		userSessionHandler.write(new AccessTokenSessionData(), accToken, userSessionAT);
 		HttpServletRequest request = new MockHttpServletRequest();

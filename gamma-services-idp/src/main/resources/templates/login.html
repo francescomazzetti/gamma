@@ -11,7 +11,7 @@
 		<h2>Stai eseguendo l'accesso per conto di: <div th:utext="${clientName}" /></h2>
 	</div>
 	<div>
-		<form id="loginform" action="/gamma-idp/login" method="POST">
+		<form id="loginform" action="/gamma-idp/internal/login" method="POST">
 			<input name="sesid" id="sesid" type="hidden" th:value="${csrf}" />
 			<input type="text" id="username" name="username" value="" />
 			<br/>

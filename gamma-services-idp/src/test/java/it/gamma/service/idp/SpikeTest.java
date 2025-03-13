@@ -6,8 +6,6 @@ import java.util.Base64;
 
 import org.junit.jupiter.api.Test;
 
-import jakarta.xml.bind.DatatypeConverter;
-
 public class SpikeTest
 {
 	@Test

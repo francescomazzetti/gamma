@@ -31,4 +31,8 @@ public class IdpSigner
 		return jwsObjectSign.serialize();
 	}
 	
+	public X509Certificate cert() {
+		return _cert;
+	}
+	
 }

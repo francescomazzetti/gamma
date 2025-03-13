@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 public class MockMetadataReader implements IMetadataReader
 {
-	public static final String REDIRECT_URI_1 = "http://localhost:8082/gamma-service-orchestrator/client-redirect-1";
-	public static final String CLIENT_ID = "https://gamma-orchestrator.com";
+	public static final String REDIRECT_URI_1 = "http://localhost:8083/gamma-service-orchestrator/oauth/client-redirect-1";
+	public static final String CLIENT_ID = "gamma-orchestrator";
 	private Map<String, JSONObject> _metadata;
 	
 	public MockMetadataReader() {
@@ -20,7 +20,7 @@ public class MockMetadataReader implements IMetadataReader
 		gammaTestMetadata.put(KEY_SECRET, "{SHA-256}5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8");
 		JSONArray redirectUris = new JSONArray();
 		redirectUris.put(REDIRECT_URI_1);
-		redirectUris.put("http://localhost:8082/gamma-service-orchestrator/client-redirect-2");
+		redirectUris.put("http://localhost:8083/gamma-service-orchestrator/oauth/client-redirect-2");
 		gammaTestMetadata.put(KEY_REDIRECT_URIS, redirectUris);
 		_metadata.put(CLIENT_ID, gammaTestMetadata);
 	}
