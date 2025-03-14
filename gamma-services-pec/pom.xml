@@ -2,11 +2,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.gamma.service</groupId>
-	<artifactId>gamma-orchestrator</artifactId>
+	<artifactId>gamma-pec</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>gamma-orchestrator</name>
-	<description>gamma-orchestrator</description>
+	<name>gamma-pec</name>
+	<description>gamma-pec</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -54,25 +54,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-			<scope>compile</scope>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-core</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.lettuce</groupId>
-            <artifactId>lettuce-core</artifactId>
-            <scope>compile</scope>
-        </dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
@@ -159,7 +143,7 @@
 				<version>${spring-boot.version}</version>
 				<configuration>
 					<executable>true</executable>
-					<mainClass>it.gamma.service.orchestrator.Application</mainClass>
+					<mainClass>it.gamma.service.pec.Application</mainClass>
 					<environmentVariables>
 						<SERVICE_LOG_MODE>sviluppo</SERVICE_LOG_MODE>
 						<SPRINGDOC_ENABLED>true</SPRINGDOC_ENABLED>

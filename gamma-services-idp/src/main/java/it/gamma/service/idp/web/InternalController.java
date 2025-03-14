@@ -2,6 +2,7 @@ package it.gamma.service.idp.web;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.UUID;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.gamma.service.idp.IConstants;
+import it.gamma.service.idp.OfficialLogWriter;
+import it.gamma.service.idp.mongo.model.OfficialLogData;
+import it.gamma.service.idp.mongo.respositories.OfficialLogDataRepository;
 import it.gamma.service.idp.redis.AzCodeSessionData;
 import it.gamma.service.idp.redis.UserSessionHandler;
 import it.gamma.service.idp.web.authenticator.IUserAuthenticator;
@@ -28,15 +32,18 @@ public class InternalController
 	private IUserAuthenticator _userAuthenticator;
 	private Logger log;
 	private UserSessionHandler _userSessionHandler;
+	private OfficialLogDataRepository _officialLogDataRepository;
 
 	@Autowired
 	public InternalController(
 			@Qualifier("authenticator.authenticatorService") IUserAuthenticator userAuthenticator,
-			UserSessionHandler userSessionHandler
+			UserSessionHandler userSessionHandler,
+			OfficialLogDataRepository officialLogDataRepository
 			)
 	{
 		_userAuthenticator = userAuthenticator;
 		_userSessionHandler = userSessionHandler;
+		_officialLogDataRepository = officialLogDataRepository;
 		log = LoggerFactory.getLogger(InternalController.class);
 	}
 	
@@ -76,6 +83,7 @@ public class InternalController
 			redirection = redirection + "&state="+state;
 		}
 		log.info(sid + " - authentication ok - username: " + username + " - redirection to: " + redirection);
+		new OfficialLogWriter(_officialLogDataRepository).login(request, sid, username, true);
 		return "redirect:"+redirection;
 	}
 	

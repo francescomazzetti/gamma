@@ -1,4 +1,4 @@
-package it.gamma.service.orchestrator;
+package it.gamma.service.pec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @ComponentScan(basePackages = {
-		"it.gamma.service.orchestrator"
+		"it.gamma.service.pec"
 	}
 )
 public class Application
