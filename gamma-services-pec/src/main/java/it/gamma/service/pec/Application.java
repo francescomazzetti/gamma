@@ -21,4 +21,5 @@ public class Application
 		logger.debug("LOG DEBUG ENABLED");
 		logger.info("APPLICATION " + IConstants.APPLICATION_NAME + " STARTED");
 	}
+	
 }

@@ -4,19 +4,28 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document("UserPec")
 public class UserPec
 {
 	@Id
 	private String id;
 	private String address;
-	@Indexed(unique = false)
+	@Indexed(name="taxcode_idx", unique = false)
 	private String taxcode;
+	private String tenantId;
 	
-	public UserPec(String id, String address, String taxcode) {
+	public UserPec() {
+		this.setId("");
+		this.setAddress("");
+		this.setTaxcode("");
+		this.setTenantId("");
+	}
+	
+	public UserPec(String id, String address, String taxcode, String tenantId) {
 		this.setId(id);
 		this.setAddress(address);
 		this.setTaxcode(taxcode);
+		this.setTenantId(tenantId);
 	}
 
 	public String getId() {
@@ -41,6 +50,14 @@ public class UserPec
 
 	public void setTaxcode(String taxcode) {
 		this.taxcode = taxcode;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }

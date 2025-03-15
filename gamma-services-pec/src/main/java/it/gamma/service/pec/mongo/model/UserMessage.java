@@ -9,38 +9,66 @@ public class UserMessage
 {
 	@Id
 	private String id;
+	@Indexed(name="address_idx", unique = false)
 	private String address;
-	@Indexed(unique = false)
-	private String taxcode;
+	@Indexed(name="pecid_idx", unique = false)
+	private String pecId;
+	@Indexed(name="hasattachments_idx", unique = false)
+	private String hasattachments;
+	@Indexed(name="type_idx", unique = false)
+	private String type;
+	private String timestamp;
 	
-	public UserMessage(String id, String address, String taxcode) {
-		this.setId(id);
-		this.setAddress(address);
-		this.setTaxcode(taxcode);
+	public UserMessage() {
+		this("", "", "", "", "", "");
+	}
+	
+	public UserMessage(String id, String address, String pecId, String hasAttachments, String type, String timestamp) {
+		this.id = id;
+		this.address = address;
+		this.pecId = pecId;
+		this.hasattachments = hasAttachments;
+		this.type = type;
+		this.setTimestamp(timestamp);
 	}
 
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
 	public String getAddress() {
 		return address;
 	}
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
-	public String getTaxcode() {
-		return taxcode;
+	public String getPecId() {
+		return pecId;
+	}
+	public void setPecId(String pecId) {
+		this.pecId = pecId;
+	}
+	public String getHasattachments() {
+		return hasattachments;
+	}
+	public void setHasattachments(String hasattachments) {
+		this.hasattachments = hasattachments;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public void setTaxcode(String taxcode) {
-		this.taxcode = taxcode;
+	public String getTimestamp() {
+		return timestamp;
 	}
 
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+	
 }

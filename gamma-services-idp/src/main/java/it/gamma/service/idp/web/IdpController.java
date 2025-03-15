@@ -107,15 +107,21 @@ public class IdpController
 			log.error("userinfo endpoint ko - invalid authorization header");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		log.info("authorization header: " + authorization);
+		int indexof = authorization.indexOf("Bearer");
+		log.info("index of bearer: " + indexof);
 		String accessToken = authorization.split("Bearer ")[1];
+		log.info("authorization header without bearer: " + accessToken);
 		String userData = _userSessionHandler.read(new AccessTokenSessionData(), accessToken);
 		if (userData == null) {
 			log.error("no valid session found from access token");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		JSONObject userDataJson = new JSONObject(userData);
+		log.info("valid access token received - username: " + userDataJson.getString("username"));
 		try {
 			String signedToken = new SignedTokenFactory().build(userDataJson, _userAuthenticator, _idpSigner);
+			log.info("valid access token received - username: " + userDataJson.getString("username") + " - signed token: " + signedToken);
 			return ResponseEntity.ok(signedToken);
 		} catch (JOSEException e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

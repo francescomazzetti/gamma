@@ -12,6 +12,7 @@
 		var client_id = /*[[${client_id}]]*/ '';
 		var grant_type = /*[[${grant_type}]]*/ '';
 		var code = /*[[${code}]]*/ '';
+		var pecUrl = /*[[${pecUrl}]]*/ '';
     	/*]]>*/
 		var at = "";
 		var username = "";
@@ -47,7 +48,6 @@
 											username = resultData.username;
 											$('#pusername').html(username);
 											$('#postlogin-div').show();
-											
 										}
 									}
 								});
@@ -56,6 +56,50 @@
 					});
 				}
 		});
+		
+		function getPecMessages() {
+			var type = $("input[name='type']:checked").val();
+			var email = $("#email").val();
+			var attachments = 'false';
+			if ($('#hasattachments').is(":checked")) {
+				attachments = 'true';
+			}
+			var data = {
+				'type': type,
+				'email': email,
+				'hasattachments': attachments
+			};
+			$.ajax({
+			   type: "POST",
+			   url: pecUrl,
+			   data: data,
+			   headers: {'Authorization': 'Bearer '+at},
+			   success: function(responsedata) {
+				$('#pec-list-div').show();
+				var innerHtmlPec = "";
+				$.each(responsedata, function(idx,obj){
+					$.each(obj, function(key,value){
+						if (key=='pec') {
+							innerHtmlPec = innerHtmlPec + "<h2>Messaggi per l'indirizzo <b>"+value+"</b></h2>";
+						} else {
+							$.each(value, function(keym,valuem){
+								innerHtmlPec = innerHtmlPec + "<p>";
+								if ("true"==valuem.hasAttachments) {
+									innerHtmlPec = innerHtmlPec + "<b>A</b> ";
+								}
+								innerHtmlPec = innerHtmlPec + "tipo: " + valuem.type;
+								innerHtmlPec = innerHtmlPec + " indirizzo: " + valuem.address;
+								innerHtmlPec = innerHtmlPec + " timestamp: " + valuem.timestamp;
+								innerHtmlPec = innerHtmlPec + "<br/>";
+							});
+						}
+					});
+					innerHtmlPec = innerHtmlPec + "<br><br>";
+				});
+				$("#pec-list-internal").html(innerHtmlPec);
+			   }
+			 });
+		}
     </script>
 </head>
 
@@ -81,10 +125,27 @@
 		</form>
 	</div>
 	<div id="postlogin-div" style="display: none;">
-			<h2>Benvenuto <div id="pusername"></div></h2>
-			Clicca per vedere le tue caselle PEC
-			<input type="button" id="pec-load" value="Prosegui" />
-		</div>
+		<h2>Benvenuto <div id="pusername"></div></h2>
+		Clicca per vedere i messaggi delle tue caselle PEC in base ai dati impostati nei filtri
+		<br>
+		<form id="pec-messages-form">
+			<input type="checkbox" id="hasattachments" name="hasattachments" value="has-attachments">
+			<label for="hasattachments">Con allegati</label>
+			<br>
+			<input type="radio" id="incoming" name="type" value="incoming">
+			<label for="html">Ricevute</label><br>
+			<input type="radio" id="outgoing" name="type" value="outgoing">
+			<label for="css">Inviate</label><br>
+			<br>
+			<label for="email">Mittente/Destinatario</label><br>
+			<input type="text" id="email" name="email">
+			<input type="button" id="pec-load" value="Prosegui" onclick="getPecMessages(); return false;"/>
+		</form>
+	</div>
+	<div id="pec-list-div" style="display: none;">
+		<h2>I tuoi messaggi:</h2>
+		<div id="pec-list-internal"></div>
+	</div>
 </body>
 
 </html>
