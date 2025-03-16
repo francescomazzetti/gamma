@@ -1,4 +1,4 @@
-package it.gamma.service.signer;
+package it.gamma.service.worker;
 
 public interface IConstants
 {
@@ -15,5 +15,7 @@ public interface IConstants
 	String SIGNATURE_SERVICE_DEVICE = "device";
 	String SESSION_USER_ACCESS_TOKEN = "ses_at";
 	String STATUS_TO_BE_PROCESSED = "TO_BE_PROCESSED";
-	String SIGNATURE_TYPE_P7M = "p7m";
+	String STATUS_IN_PROGRESS = "IN_PROGRESS";
+	String STATUS_ERROR = "ERROR";
+	String STATUS_SUCCESSFUL = "SUCCESSFUL";
 }

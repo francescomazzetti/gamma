@@ -2,11 +2,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.gamma.service</groupId>
-	<artifactId>gamma-signer</artifactId>
+	<artifactId>gamma-worker</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>gamma-signer</name>
-	<description>gamma-signer</description>
+	<name>gamma-worker</name>
+	<description>gamma-worker</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,11 +45,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<scope>compile</scope>
 		</dependency>
@@ -57,21 +52,6 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-core</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-            <scope>compile</scope>
-        </dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
@@ -87,24 +67,6 @@
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
 			<scope>compile</scope>
-		</dependency>
-		<!-- INIZIO JWT CON NUMBUS -->
-		<dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>nimbus-jose-jwt</artifactId>
-			<version>4.23</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-io</groupId>
-					<artifactId>commons-io</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- FINE JWT CON NUMBUS -->
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcmail-jdk15</artifactId>
-			<version>1.46</version>
 		</dependency>
 		<!-- end compile -->
 		<!-- start test -->
@@ -163,7 +125,7 @@
 				<version>${spring-boot.version}</version>
 				<configuration>
 					<executable>true</executable>
-					<mainClass>it.gamma.service.signer.Application</mainClass>
+					<mainClass>it.gamma.service.worker.Application</mainClass>
 					<environmentVariables>
 						<SERVICE_LOG_MODE>sviluppo</SERVICE_LOG_MODE>
 						<SPRINGDOC_ENABLED>true</SPRINGDOC_ENABLED>

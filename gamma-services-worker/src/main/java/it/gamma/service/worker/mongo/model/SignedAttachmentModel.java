@@ -1,4 +1,4 @@
-package it.gamma.service.signer.mongo.model;
+package it.gamma.service.worker.mongo.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -21,6 +21,10 @@ public class SignedAttachmentModel
 	private String status;
 	private String worker;
 	private String retentionTimestamp;
+	
+	public SignedAttachmentModel() {
+		this("", "", "", "", "", "", "", "", "", "");
+	}
 	
 	public SignedAttachmentModel(String id, String hash, String fileOrigin, String fileName, String signatureType, String signature, String owner, String tenantId, String timestamp, String status) {
 		this.id = id;

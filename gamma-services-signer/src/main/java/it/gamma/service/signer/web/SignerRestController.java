@@ -14,16 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 
 import it.gamma.service.signer.IConstants;
-import it.gamma.service.signer.account.IUserAccountRetriever;
 import it.gamma.service.signer.account.UserAccount;
 import it.gamma.service.signer.mongo.model.SignedAttachmentModel;
 import it.gamma.service.signer.mongo.respository.SignedAttachmentRepository;
 import it.gamma.service.signer.service.ISignatureService;
 import it.gamma.service.signer.service.OauthUserinfoService;
-import it.gamma.service.signer.service.RemoteSignVerifierService;
 import it.gamma.service.signer.utils.SignatureServiceFactory;
 import it.gamma.service.signer.web.response.Attachment;
 import jakarta.servlet.http.HttpSession;
@@ -34,21 +31,15 @@ public class SignerRestController {
 	
 	private Logger log;
 	private OauthUserinfoService _oauthUserinfoService;
-	private RemoteSignVerifierService _remoteSignVerifierService;
-	private IUserAccountRetriever _userAccountRetriever;
 	private SignedAttachmentRepository _signedAttachmentRepository;
 	
 	@Autowired
 	public SignerRestController(
 			@Qualifier("oauth.userinfoService") OauthUserinfoService oauthUserinfoService,
-			@Qualifier("signer.remoteSignService") RemoteSignVerifierService remoteSignVerifierService,
-			@Qualifier("signer.userAccountRetriever") IUserAccountRetriever userAccountRetriever,
 			SignedAttachmentRepository signedAttachmentRepository
 			)
 	{
 		_oauthUserinfoService = oauthUserinfoService;
-		_remoteSignVerifierService = remoteSignVerifierService;
-		_userAccountRetriever = userAccountRetriever;
 		_signedAttachmentRepository = signedAttachmentRepository;
 		log = LoggerFactory.getLogger(SignerRestController.class);
 	}
@@ -86,7 +77,7 @@ public class SignerRestController {
 		try {
 			String signature = service.sign(att.getHash(), userAccount);
 			SignedAttachmentModel signedAttachmentModel = new SignedAttachmentModel(
-					attachmentId, att.getHash(), att.getOrigin(), att.getName(), 
+					attachmentId, att.getHash(), att.getOrigin(), att.getName(), IConstants.SIGNATURE_TYPE_P7M,
 					signature, att.getOwner(), claims.getString(IConstants.TENANT_ID), 
 					new Date().getTime()+"", IConstants.STATUS_TO_BE_PROCESSED);
 			SignedAttachmentModel savedModel = _signedAttachmentRepository.save(signedAttachmentModel);
