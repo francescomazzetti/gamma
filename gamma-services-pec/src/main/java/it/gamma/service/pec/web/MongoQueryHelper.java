@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import it.gamma.service.pec.configuration.MongoDbPecConfiguration;
+import it.gamma.service.pec.mongo.model.Attachment;
 import it.gamma.service.pec.mongo.model.UserMessage;
 import it.gamma.service.pec.mongo.model.UserPec;
 import it.gamma.service.pec.web.request.GetMessagesRequest;
@@ -48,6 +50,16 @@ public class MongoQueryHelper
 				_mongoDbPecConfiguration.getMessagesTablePrefix()+tenantId
 				);
 		return messages;
+	}
+
+	public List<Attachment> findUserAttachments(List<String> list, String tenantId) {
+		Criteria criteria = Criteria.where("messageId").in(list);
+		List<Attachment> attachments = _mongoTemplate.find(
+				new Query(criteria), 
+				Attachment.class, 
+				_mongoDbPecConfiguration.getAttachmentsTablePrefix()+tenantId
+				);
+		return attachments;
 	}
 
 }

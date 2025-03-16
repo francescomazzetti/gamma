@@ -24,7 +24,7 @@ public class PecMessagesHandler
 				if (!userMessage.getPecId().equals(userPec.getId())) {
 					continue;
 				}
-				UserPecMessage userPecMessage = new UserPecMessage(userMessage.getType(), userMessage.getAddress(), userMessage.getHasattachments(), userMessage.getTimestamp());
+				UserPecMessage userPecMessage = new UserPecMessage(userMessage.getId(), userMessage.getType(), userMessage.getAddress(), userMessage.getHasattachments(), userMessage.getTimestamp());
 				if (!pecMessagesMap.containsKey(userPec.getAddress())) {
 					pecMessagesMap.put(userPec.getAddress(), new PecMessagesHolder(userPec.getAddress()));
 				}

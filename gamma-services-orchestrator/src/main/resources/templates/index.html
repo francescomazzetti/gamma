@@ -13,9 +13,11 @@
 		var grant_type = /*[[${grant_type}]]*/ '';
 		var code = /*[[${code}]]*/ '';
 		var pecUrl = /*[[${pecUrl}]]*/ '';
+		var pecAttachmentsUrl = /*[[${pecAttachmentsUrl}]]*/ '';
     	/*]]>*/
 		var at = "";
 		var username = "";
+		var attArr = [];
 		
 		$(function(){
 				if (status == "logged_out" || status==null) {
@@ -34,7 +36,6 @@
 					      data: formData,
 					      dataType: "text",
 					      success: function(resultData) {
-							console.log(resultData);
 							var resultDataJson = $.parseJSON(resultData);
 							if (resultDataJson.error == null) {
 								$.ajax({
@@ -56,6 +57,40 @@
 					});
 				}
 		});
+		
+		function handleAttachment(element) {
+			if (element.checked) {
+				if (!attArr.includes(element.id)) {
+					attArr.push(element.id);
+				}
+			} else {
+				if (attArr.includes(element.id)) {
+					attArr.splice( attArr.indexOf(element.id), 1 );
+				}
+			}
+			console.log(attArr);
+		}
+		
+		function signAttachments() {
+			console.log(attArr);
+			var stringified = JSON.stringify(attArr);
+			var data = {
+				'messageIds': attArr
+			};
+			$.ajax({
+			   type: "POST",
+			   url: pecAttachmentsUrl,
+			   data: data,
+			   headers: {'Authorization': 'Bearer '+at},
+			   success: function(responsedata) {
+				console.log("success");
+				console.log(responsedata);
+				$("#attachmentDataIn").val(responsedata.signedData);
+				$("#attachment-sign-form").attr('action', responsedata.url);
+				$('form#attachment-sign-form').submit();
+			   }
+			 });
+		}
 		
 		function getPecMessages() {
 			var type = $("input[name='type']:checked").val();
@@ -85,7 +120,7 @@
 							$.each(value, function(keym,valuem){
 								innerHtmlPec = innerHtmlPec + "<p>";
 								if ("true"==valuem.hasAttachments) {
-									innerHtmlPec = innerHtmlPec + "<b>A</b> ";
+									innerHtmlPec = innerHtmlPec + "<input type=\"checkbox\" id=" + valuem.id + " name=" + valuem.id + " onchange=\"handleAttachment(this)\"><b>A</b> ";
 								}
 								innerHtmlPec = innerHtmlPec + "tipo: " + valuem.type;
 								innerHtmlPec = innerHtmlPec + " indirizzo: " + valuem.address;
@@ -143,8 +178,12 @@
 		</form>
 	</div>
 	<div id="pec-list-div" style="display: none;">
-		<h2>I tuoi messaggi:</h2>
+		<h2>I tuoi messaggi. Seleziona i messaggi con allegato per firmare gli allegati al loro interno:</h2>
 		<div id="pec-list-internal"></div>
+		<input type="button" id="signAttButton" name="signAttButton" onclick="signAttachments()" value="Firma Allegati">
+		<form id="attachment-sign-form" action="" method="POST">
+			<input name="attachmentDataIn" id="attachmentDataIn" type="hidden" value="" />
+		</form>
 	</div>
 </body>
 

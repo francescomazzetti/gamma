@@ -14,17 +14,19 @@ public class Attachment
 	private String hashValue;
 	private String name;
 	private String origin;
+	private String owner;
 	
 	public Attachment() {
-		this("", "", "", "", "");
+		this("", "", "", "", "", "");
 	}
 	
-	public Attachment(String id, String messageId, String hashValue, String name, String origin) {
+	public Attachment(String id, String messageId, String hashValue, String name, String origin, String owner) {
 		this.id = id;
 		this.messageId = messageId;
 		this.hashValue = hashValue;
 		this.name = name;
 		this.origin = origin;
+		this.owner = owner;
 	}
 
 	public String getId() {
@@ -56,6 +58,14 @@ public class Attachment
 	}
 	public void setOrigin(String origin) {
 		this.origin = origin;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 }

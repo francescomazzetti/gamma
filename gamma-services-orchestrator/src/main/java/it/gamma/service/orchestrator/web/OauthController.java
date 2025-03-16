@@ -74,6 +74,7 @@ public class OauthController
 			return "index";
 		}
 		model.addAttribute("pecUrl", _pecServiceConfiguration.getRetrieveMessagesUrl());
+		model.addAttribute("pecAttachmentsUrl", _pecServiceConfiguration.getRetrieveAttachmentsUrl());
 		log.info("authorization code found - state: " + state);
 		_tokenService.requestData(model, azcode);
 		return "index";

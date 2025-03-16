@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class PecServiceConfiguration {
 	
 	private String retrieveMessagesUrl;
+	private String retrieveAttachmentsUrl;
 	
 	public String getRetrieveMessagesUrl() {
 		return retrieveMessagesUrl;
@@ -15,5 +16,13 @@ public class PecServiceConfiguration {
 
 	public void setRetrieveMessagesUrl(String retrieveMessagesUrl) {
 		this.retrieveMessagesUrl = retrieveMessagesUrl;
+	}
+
+	public String getRetrieveAttachmentsUrl() {
+		return retrieveAttachmentsUrl;
+	}
+
+	public void setRetrieveAttachmentsUrl(String retrieveAttachmentsUrl) {
+		this.retrieveAttachmentsUrl = retrieveAttachmentsUrl;
 	}
 }
