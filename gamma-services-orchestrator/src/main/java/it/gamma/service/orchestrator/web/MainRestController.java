@@ -72,4 +72,10 @@ public class MainRestController
 		log.info("init session ok - username: " + username);
 		return response;
 	}
+	
+	@GetMapping(path= "/logout-session")
+	public void logoutSession(HttpSession session)
+	{
+		session.invalidate();
+	}
 }

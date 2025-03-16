@@ -1,7 +1,5 @@
 <configuration>
 
-	<property scope="system" name="log.mode" value="${SERVICE_LOG_MODE:-produzione}" />
-
 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -10,11 +8,8 @@
 		</encoder>
 	</appender>
 
-	<logger name="it.poste.business.anonymous.core.tracer.HttpServletRequestTracerWrapper" level="OFF" />
-	<logger name="it.poste.business.anonymous.core.tracer.HttpServletRequestExtractAdapter" level="OFF" />
-	<logger name="org.apache.hc.client5.http" level="OFF" />
+	<logger name="it.gamma.service.signer" level="DEBUG" />
 	<root level="DEBUG">
 		<appender-ref ref="CONSOLE" />
 	</root>
-	
 </configuration>

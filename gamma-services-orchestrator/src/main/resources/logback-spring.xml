@@ -1,7 +1,5 @@
 <configuration>
 
-	<property scope="system" name="log.mode" value="${SERVICE_LOG_MODE:-produzione}" />
-
 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -10,46 +8,9 @@
 		</encoder>
 	</appender>
 
-	<if condition='property("log.mode").equalsIgnoreCase("produzione")'>
-	<then>
-		<logger name="it.poste.business.anonymous.core.tracer.HttpServletRequestTracerWrapper" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.tracer.HttpServletRequestExtractAdapter" level="OFF" />
-		<logger name="io.opentracing" level="OFF" />
-		<logger name="io.micrometer" level="OFF" />
-		<logger name="it.poste.micrometer" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.tracer.DataMapExtractAdapter" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.tracer.DataMapTracerWrapper" level="OFF" />
-		<logger name="it.poste.rest.client.apachehttp" level="OFF" />
-		<logger name="org.apache.hc.client5.http" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.ldap" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.idp.STSExecutor" level="INFO" />
-		<logger name="it.poste.notificationgateway.rest.client.jersey2" level="INFO" />
-		<logger name="it.poste.business.anonymous" level="INFO" />
-		<root level="INFO">
-			<appender-ref ref="CONSOLE" />
-		</root>
-	</then>
-	</if>
-
-	<if condition='property("log.mode").equalsIgnoreCase("sviluppo")'>
-	<then>
-		<logger name="it.poste.business.anonymous.core.tracer.HttpServletRequestTracerWrapper" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.tracer.HttpServletRequestExtractAdapter" level="OFF" />
-		<logger name="io.opentracing" level="OFF" />
-		<logger name="io.micrometer" level="OFF" />
-		<logger name="it.poste.micrometer" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.tracer.DataMapExtractAdapter" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.tracer.DataMapTracerWrapper" level="OFF" />
-		<logger name="it.poste.rest.client.apachehttp" level="OFF" />
-		<logger name="org.apache.hc.client5.http" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.ldap" level="OFF" />
-		<logger name="it.poste.business.anonymous.core.idp.STSExecutor" level="INFO" />
-		<logger name="it.poste.notificationgateway.rest.client.jersey2" level="INFO" />
-		<logger name="it.poste.business.anonymous" level="DEBUG" />
-		<root level="DEBUG">
-			<appender-ref ref="CONSOLE" />
-		</root>
-	</then>
-	</if>
+	<logger name="it.gamma.service.orchestrator" level="DEBUG" />
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+	</root>
 	
 </configuration>

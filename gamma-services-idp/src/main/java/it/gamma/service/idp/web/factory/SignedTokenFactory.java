@@ -16,6 +16,7 @@ public class SignedTokenFactory
 		JSONObject userinfoData = new JSONObject();
 		userinfoData.put("aud", authnRequest.getString("client_id"));
 		userinfoData.put("iss", "gamma-idp");
+		userinfoData.put("sid", userDataJson.getString("sid"));
 		String username = userDataJson.getString("username");
 		userinfoData.put("sub", username);
 		JSONObject claims = new JSONObject();

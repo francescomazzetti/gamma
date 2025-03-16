@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.gamma.service.signer.IConstants;
 import it.gamma.service.signer.account.UserAccount;
 import it.gamma.service.signer.mongo.model.SignedAttachmentModel;
+import it.gamma.service.signer.mongo.respository.OfficialLogDataRepository;
 import it.gamma.service.signer.mongo.respository.SignedAttachmentRepository;
+import it.gamma.service.signer.ol.OfficialLogWriter;
 import it.gamma.service.signer.service.ISignatureService;
 import it.gamma.service.signer.service.OauthUserinfoService;
 import it.gamma.service.signer.utils.SignatureServiceFactory;
 import it.gamma.service.signer.web.response.Attachment;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -32,21 +35,25 @@ public class SignerRestController {
 	private Logger log;
 	private OauthUserinfoService _oauthUserinfoService;
 	private SignedAttachmentRepository _signedAttachmentRepository;
+	private OfficialLogDataRepository _officialLogDataRepository;
 	
 	@Autowired
 	public SignerRestController(
 			@Qualifier("oauth.userinfoService") OauthUserinfoService oauthUserinfoService,
-			SignedAttachmentRepository signedAttachmentRepository
+			SignedAttachmentRepository signedAttachmentRepository,
+			OfficialLogDataRepository officialLogDataRepository
 			)
 	{
 		_oauthUserinfoService = oauthUserinfoService;
 		_signedAttachmentRepository = signedAttachmentRepository;
+		_officialLogDataRepository = officialLogDataRepository;
 		log = LoggerFactory.getLogger(SignerRestController.class);
 	}
 	
 	@PostMapping(path= "/sign")
 	public ResponseEntity signAttachment(
 			@RequestParam(name="id", required = true) String attachmentId,
+			HttpServletRequest request,
 			HttpSession session)
 	{
 		String accessToken = (String) session.getAttribute(IConstants.SESSION_USER_ACCESS_TOKEN);
@@ -85,6 +92,7 @@ public class SignerRestController {
 				log.error("data signature storage failed");
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 			}
+			new OfficialLogWriter(_officialLogDataRepository).sign(request, userDataJson.getString("sid"), userDataJson.getString("sub"), true);
 			return ResponseEntity.status(HttpStatus.OK).build();
 		} catch (Exception e) {
 			log.error("data signature failed: " + e.getMessage());

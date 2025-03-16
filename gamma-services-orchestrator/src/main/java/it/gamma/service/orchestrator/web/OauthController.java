@@ -79,4 +79,16 @@ public class OauthController
 		_tokenService.requestData(model, azcode);
 		return "index";
 	}
+	
+	@GetMapping(path= "/client-redirect-logout")
+	public String oauthRedirectLogout(
+			HttpSession session,
+			Model model)
+	{
+		session.invalidate();
+		String state = UUID.randomUUID().toString();
+		session.setAttribute(IConstants.STATE, state);
+		_azRequestService.requestData(model, state);
+		return "index";
+	}
 }

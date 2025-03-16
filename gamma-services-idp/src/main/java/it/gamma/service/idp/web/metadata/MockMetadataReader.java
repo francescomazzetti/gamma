@@ -21,6 +21,7 @@ public class MockMetadataReader implements IMetadataReader
 		JSONArray redirectUris = new JSONArray();
 		redirectUris.put(REDIRECT_URI_1);
 		redirectUris.put("http://localhost:8083/gamma-service-orchestrator/oauth/client-redirect-2");
+		redirectUris.put("http://localhost:8083/gamma-service-orchestrator/oauth/client-redirect-logout");
 		gammaTestMetadata.put(KEY_REDIRECT_URIS, redirectUris);
 		_metadata.put(CLIENT_ID, gammaTestMetadata);
 	}

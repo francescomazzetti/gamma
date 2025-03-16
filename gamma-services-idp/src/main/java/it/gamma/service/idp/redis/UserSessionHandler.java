@@ -30,4 +30,8 @@ public class UserSessionHandler
 	public String read(ISessionData sessionData, String key) {
 		return _redisTemplate.opsForValue().get(sessionData.prefix()+key);
 	}
+	
+	public boolean remove(ISessionData sessionData, String key) {
+		return _redisTemplate.delete(sessionData.prefix()+key);
+	}
 }

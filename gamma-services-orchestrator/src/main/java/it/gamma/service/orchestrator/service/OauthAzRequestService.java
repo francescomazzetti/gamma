@@ -25,5 +25,6 @@ public class OauthAzRequestService
 		model.addAttribute(IConstants.SCOPE, _scope);
 		model.addAttribute(IConstants.STATE, state);
 		model.addAttribute(IConstants.URL, _oauthAzUrl);
+		
 	}
 }
