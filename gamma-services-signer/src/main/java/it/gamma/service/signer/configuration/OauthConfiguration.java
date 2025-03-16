@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Scope;
 import it.gamma.service.signer.service.OauthUserinfoService;
 
 @Configuration
-@ConfigurationProperties(prefix="pec.oauth")
+@ConfigurationProperties(prefix="signer.oauth")
 public class OauthConfiguration
 {
 	private String userinfoEndpoint;

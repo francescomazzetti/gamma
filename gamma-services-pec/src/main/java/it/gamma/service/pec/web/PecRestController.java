@@ -27,6 +27,7 @@ import it.gamma.service.pec.mongo.model.UserMessage;
 import it.gamma.service.pec.mongo.model.UserPec;
 import it.gamma.service.pec.mongo.repositories.UserPecRepository;
 import it.gamma.service.pec.service.OauthUserinfoService;
+import it.gamma.service.pec.web.request.GetAttachmentRequest;
 import it.gamma.service.pec.web.request.GetMessagesRequest;
 import it.gamma.service.pec.web.response.GetAttachmentResponse;
 import it.gamma.service.pec.web.sign.AttachmentsDataSignerFactory;

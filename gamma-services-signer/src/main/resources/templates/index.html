@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<title>Index</title>
+<script type="text/javascript" th:inline="javascript">
+    	/*<![CDATA[*/
+		var signUrl = /*[[${signUrl}]]*/ '';
+    	/*]]>*/
+		
+		function signAttachment(attId) {
+			var data = {
+				'id': attId
+			};
+			$.ajax({
+			   type: "POST",
+			   url: signUrl,
+			   data: data,
+			   success: function(responsedata) {
+				$('#div-'+attId).html('Allegato firmato con successo!');
+			   }
+			 });
+		}
+    </script>
+</head>
+
+<body>
+	<div id="attachments-list-div">
+		<h2>Firma i tuoi allegati:</h2>
+		<div th:each="attachment : ${attachments}">
+            <td><span th:text="${attachment.value.name}"></span></td>
+			<input type="button" th:id="'bt-'+${attachment.key}" th:attr="onclick=|signAttachment('${attachment.key}')|"  value="Firma Allegato">
+			<div th:id="'div-'+${attachment.key}"></div>
+			<br>
+			<br>
+        </div>
+	</div>
+</body>
+
+</html>

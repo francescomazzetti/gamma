@@ -1,4 +1,4 @@
-package it.gamma.service.pec.web.sign;
+package it.gamma.service.pec.configuration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.util.ResourceUtils;
+
+import it.gamma.service.pec.web.sign.PecSigner;
 
 @Configuration
 @ConfigurationProperties(prefix="pec.sign.keystore")

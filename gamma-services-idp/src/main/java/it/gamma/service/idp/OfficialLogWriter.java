@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class OfficialLogWriter
 {
+	private static final String SYSTEM = "gamma-idp";
 	private OfficialLogDataRepository _officialLogDataRepository;
 
 	public OfficialLogWriter(OfficialLogDataRepository officialLogDataRepository) {
@@ -24,7 +25,10 @@ public class OfficialLogWriter
 						new Date().getTime()+"",
 						"login",
 						"login utente",
-						"login effettuata con successo")
+						"login effettuata con successo",
+						sid,
+						SYSTEM
+						)
 				);
 	}
 

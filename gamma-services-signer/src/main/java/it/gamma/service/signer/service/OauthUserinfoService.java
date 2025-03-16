@@ -1,8 +1,6 @@
 package it.gamma.service.signer.service;
 
 import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.text.ParseException;
 
 import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
@@ -12,13 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.JWSVerifier;
-import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.crypto.RSASSAVerifier;
-
-import net.minidev.json.JSONObject;
+import it.gamma.service.signer.web.utils.JwsSignVerifier;
 
 public class OauthUserinfoService {
 	
@@ -46,7 +38,7 @@ public class OauthUserinfoService {
 			return false;
 		}
 		String userinfoToken = response.getBody();
-		String cleanToken = verifySignature(userinfoToken, log);
+		String cleanToken = new JwsSignVerifier().verifySignature(userinfoToken, _idpPublicKey, log);
 		if ("".equals(cleanToken)) {
 			return false;
 		}
@@ -54,27 +46,4 @@ public class OauthUserinfoService {
 		return true;
 	}
 
-	private String verifySignature(String token, Logger log) {
-		JWSObject jwsObjectSigned = null;
-		try {
-			jwsObjectSigned = JWSObject.parse(token);
-		} catch (ParseException e) {
-			log.error("error in userinfo token signature verify - error parsing token - " + e.getMessage());
-			return "";
-		}
-		JWSVerifier verifier = new RSASSAVerifier((RSAPublicKey) _idpPublicKey);
-		try {
-			boolean signverfied = jwsObjectSigned.verify(verifier);
-			if (!signverfied) {
-				log.error("error in userinfo token signature verify");
-				return "";
-			}
-			Payload payload = jwsObjectSigned.getPayload();
-			JSONObject paylodToJson = payload.toJSONObject();
-			return paylodToJson.toJSONString();
-		} catch (JOSEException e) {
-			log.error("error in userinfo token signature verify - " + e.getMessage());
-			return "";
-		}
-	}
 }

@@ -1,4 +1,4 @@
-package it.gamma.service.pec.web;
+package it.gamma.service.pec.web.request;
 
 import java.util.List;
 

@@ -14,8 +14,10 @@ public class OfficialLogData
 	private String eventType;
 	private String eventDescription;
 	private String eventMessage;
+	private String sessionId;
+	private String system;
 	
-	public OfficialLogData(String id, String ip, String username, String date, String eventType, String eventDescription, String eventMessage) {
+	public OfficialLogData(String id, String ip, String username, String date, String eventType, String eventDescription, String eventMessage, String sessionId, String system) {
 		this.setId(id);
 		this.setIp(ip);
 		this.setUsername(username);
@@ -23,6 +25,8 @@ public class OfficialLogData
 		this.setEventType(eventType);
 		this.setEventDescription(eventDescription);
 		this.setEventMessage(eventMessage);
+		this.setSessionId(sessionId);
+		this.setSystem(system);
 	}
 
 	public String getId() {
@@ -79,5 +83,21 @@ public class OfficialLogData
 
 	public void setEventMessage(String eventMessage) {
 		this.eventMessage = eventMessage;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public String getSystem() {
+		return system;
+	}
+
+	public void setSystem(String system) {
+		this.system = system;
 	}
 }
